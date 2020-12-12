@@ -22,5 +22,5 @@ export default async (req, res) => {
   if (size) {
     return res.status(200).json(buildResponse(+size, attributes));
   }
-  return res.status(200).json(convertAttributes(attributes));
+  return res.status(200).json(createJson(attributes));
 };

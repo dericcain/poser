@@ -1,24 +1,14 @@
 import { db } from '../../db';
-import { set } from 'lodash';
-import faker from 'faker';
-
-const convertAttributes = (attrs) =>
-  attrs.reduce((f, c) => {
-    const [namespace, method] = c.type.split('.')
-    const data = faker[namespace][method]()
-    set(f, c.name, data);
-    return f;
-  }, {});
+import { createJson } from '../../utils';
 
 const buildResponse = (size: number, attrs) => {
   let r: any[] = [];
   let i = 0;
   while (i++ < size) {
-    console.log(i);
-    r.push(convertAttributes(attrs));
+    r.push(createJson(attrs));
   }
   return r;
-}
+};
 
 export default async (req, res) => {
   const {

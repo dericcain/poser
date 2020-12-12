@@ -39,7 +39,7 @@ export function Content() {
       <Box>
         <FormControl id="name" isRequired mb={5}>
           <FormLabel>Endpoint name</FormLabel>
-          <Input value={name} onChange={setName} size="sm" />
+          <Input value={name as any} onChange={setName as any} size="sm" />
         </FormControl>
         {attributes.map((a, i) => (
           <HStack key={i} mb={5}>

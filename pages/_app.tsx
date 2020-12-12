@@ -1,5 +1,6 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import Head from 'next/head';
+import { EndpointProvider } from '../components/endpoint-state';
 
 const theme = extendTheme({
   fonts: {
@@ -18,9 +19,11 @@ function MyApp({ Component, pageProps }) {
           rel="stylesheet"
         />
       </Head>
-      <ChakraProvider theme={theme}>
-        <Component {...pageProps} />
-      </ChakraProvider>
+      <EndpointProvider>
+        <ChakraProvider theme={theme}>
+          <Component {...pageProps} />
+        </ChakraProvider>
+      </EndpointProvider>
     </>
   );
 }

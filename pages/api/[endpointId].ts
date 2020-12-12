@@ -1,4 +1,4 @@
-import { db } from '../../db';
+import { supabase } from '../../supabase';
 import { createJson } from '../../utils';
 
 const buildResponse = (size: number, attrs) => {
@@ -14,7 +14,7 @@ export default async (req, res) => {
   const {
     query: { endpointId, size },
   } = req;
-  const { data, error } = await db.from('endpoints').select().eq('id', endpointId);
+  const { data, error } = await supabase.from('endpoints').select().eq('id', endpointId);
   if (error || data?.length < 1) {
     return res.status(404).json({ message: 'Not found' });
   }

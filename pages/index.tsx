@@ -1,9 +1,23 @@
+import { useEffect } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 import { Box, Heading, Button, Text } from '@chakra-ui/react';
-import { db } from '../db';
+import { supabase } from '../supabase';
+import { useRouter } from 'next/router';
 
 export default function Home() {
+  const { push } = useRouter();
+
+  useEffect(() => {
+    const session = supabase.auth.session();
+    if (session) {
+      (async () => await push('create'))();
+    }
+  }, []);
+
+  const login = () => {
+    supabase.auth.signIn({ provider: 'github' });
+  };
+
   return (
     <>
       <Head>
@@ -35,12 +49,19 @@ export default function Home() {
           >
             Poser
           </Heading>
-          <Text>Build mock endpoints with ease.</Text>
-          <Link href="/create">
-            <Button mt={5} backgroundColor="gray.800" color="white" _hover={{ bg: '#000' }}>
-              Create endpoint
-            </Button>
-          </Link>
+          <Text fontSize="lg">Build mock endpoints with ease.</Text>
+          <Button
+            mt={5}
+            backgroundColor="gray.800"
+            color="white"
+            _hover={{ bg: '#000' }}
+            onClick={login}
+          >
+            Create endpoint
+          </Button>
+          <Text fontSize="xs" mt={5}>
+            (You will be logged in via Github.)
+          </Text>
         </Box>
       </Box>
     </>

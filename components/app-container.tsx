@@ -10,7 +10,6 @@ import {
   Select,
   Text,
 } from '@chakra-ui/react';
-import { createJson } from '../utils';
 import {
   fakerOptions,
   useAttributesTree,

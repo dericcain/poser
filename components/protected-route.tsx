@@ -1,4 +1,4 @@
-import { createElement, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 function Redirect({ path }) {
@@ -11,6 +11,6 @@ function Redirect({ path }) {
   return null;
 }
 
-export function ProtectedRoute({ children, user, ...props }) {
-  return user ? createElement(children, props) : <Redirect path="/" />;
+export function ProtectedRoute({ children: Children, user, ...props }) {
+  return user ? <Children {...props} /> : <Redirect path="/" />;
 }

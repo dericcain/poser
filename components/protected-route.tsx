@@ -12,5 +12,6 @@ function Redirect({ path }) {
 }
 
 export function ProtectedRoute({ children: Children, user, ...props }) {
+  // FIXME: This causes an infinite loop
   return user ? <Children {...props} /> : <Redirect path="/" />;
 }

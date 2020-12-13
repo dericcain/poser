@@ -3,8 +3,9 @@ import { AppContainer, Content, Sidebar } from '../../components/app-container';
 import { useEndpoint } from '../../components/endpoint-state';
 import { useEffect } from 'react';
 import { supabase } from '../../supabase';
+import { ProtectedRoute } from '../../components/protected-route';
 
-export default function Edit() {
+export default function Edit({ user }) {
   const {
     query: { id },
   } = useRouter();
@@ -13,11 +14,10 @@ export default function Edit() {
   useEffect(() => {
     if (id) {
       (async () => {
-        const { data, error } = await supabase
+        const { data } = await supabase
           .from('endpoints')
           .select('name, path, attributes')
           .eq('id', id);
-        console.log(data);
         if (data.length > 0) {
           setState(data[0]);
         }
@@ -25,11 +25,11 @@ export default function Edit() {
     }
   }, [id]);
 
-  console.log(state);
-
   return (
-    <AppContainer sidebar={<Sidebar />}>
-      <Content />
-    </AppContainer>
+    <ProtectedRoute user={user}>
+      <AppContainer sidebar={<Sidebar />}>
+        <Content />
+      </AppContainer>
+    </ProtectedRoute>
   );
 }

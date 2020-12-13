@@ -13,6 +13,7 @@ import {
 import { createJson } from '../utils';
 import {
   fakerOptions,
+  useAttributesTree,
   useCreateEndpoint,
   useEndpointAttributes,
   useEndpointName,
@@ -86,12 +87,12 @@ export function Content() {
 }
 
 export function Sidebar() {
-  const { attributes } = useEndpointAttributes();
+  const jsonTree = useAttributesTree();
   return (
     <Box borderLeft="1px solid #444" p={10}>
       <Text mb={5}>This is the shape of your object.</Text>
       <Box as="pre" fontSize="xs" backgroundColor="gray.100" p={3}>
-        {JSON.stringify(createJson(attributes), null, 2)}
+        {jsonTree}
       </Box>
     </Box>
   );

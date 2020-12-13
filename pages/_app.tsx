@@ -1,6 +1,7 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import Head from 'next/head';
 import { EndpointProvider } from '../components/endpoint-state';
+import { useAuth } from '../components/use-auth';
 
 const theme = extendTheme({
   fonts: {
@@ -10,6 +11,7 @@ const theme = extendTheme({
 });
 
 function MyApp({ Component, pageProps }) {
+  const user = useAuth();
   return (
     <>
       <Head>
@@ -21,7 +23,7 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <EndpointProvider>
         <ChakraProvider theme={theme}>
-          <Component {...pageProps} />
+          <Component {...pageProps} user={user} />
         </ChakraProvider>
       </EndpointProvider>
     </>

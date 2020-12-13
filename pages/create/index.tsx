@@ -1,10 +1,12 @@
-import { EndpointProvider } from '../../components/endpoint-state';
 import { AppContainer, Content, Sidebar } from '../../components/app-container';
+import { ProtectedRoute } from '../../components/protected-route';
 
-export default function Create() {
+export default function Create({ user }) {
   return (
-    <AppContainer sidebar={<Sidebar />}>
-      <Content />
-    </AppContainer>
+    <ProtectedRoute user={user}>
+      <AppContainer sidebar={<Sidebar />}>
+        <Content />
+      </AppContainer>
+    </ProtectedRoute>
   );
 }

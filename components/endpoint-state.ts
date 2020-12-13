@@ -3,7 +3,7 @@ import { createContainer } from 'react-tracked';
 import { useSetState } from 'react-use';
 import produce from 'immer';
 import { supabase } from '../supabase';
-import { makeKebab } from '../utils';
+import { createJson, makeKebab } from '../utils';
 
 interface Attribute {
   name: string;
@@ -72,6 +72,11 @@ export const useCreateEndpoint = () => {
       },
     ]);
   };
+};
+
+export const useAttributesTree = () => {
+  const { attributes } = useEndpointAttributes();
+  return JSON.stringify(createJson(attributes), null, 2);
 };
 
 export const fakerOptions = [

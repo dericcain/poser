@@ -1,9 +1,10 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { createContainer } from 'react-tracked';
 import { useSetState } from 'react-use';
 import produce from 'immer';
 import { supabase } from '../supabase';
 import { createJson, id, makeKebab } from '../utils';
+import { useRouter } from 'next/router';
 
 interface Attribute {
   name: string;
@@ -25,6 +26,21 @@ const initialState: State = {
 const useMyState = () => useSetState<State>(initialState);
 
 export const { Provider: EndpointProvider, useTracked: useEndpoint } = createContainer(useMyState);
+
+export const useClearEndpoints = () => {
+  const [, setState] = useEndpoint();
+  useEffect(() => {
+    setState(initialState);
+  }, []);
+};
+
+export const useUpdateEndpoint = (id: string) => {
+  const [state] = useEndpoint();
+  return async (e) => {
+    e.preventDefault();
+    await supabase.from('endpoints').update(state).eq('id', id);
+  };
+};
 
 export const useEndpointName = () => {
   const [state, setState] = useEndpoint();
@@ -64,9 +80,11 @@ export const useEndpointAttributes = () => {
 
 export const useCreateEndpoint = () => {
   const [state] = useEndpoint();
+  const { push } = useRouter();
   const user = supabase.auth.user();
-  return async () => {
-    await supabase.from('endpoints').insert([
+  return async (e) => {
+    e.preventDefault();
+    const { data } = await supabase.from('endpoints').insert([
       {
         ...state,
         path: makeKebab(state.name),
@@ -74,6 +92,7 @@ export const useCreateEndpoint = () => {
         user_id: user.id,
       },
     ]);
+    await push(`edit/${data[0].id}`);
   };
 };
 

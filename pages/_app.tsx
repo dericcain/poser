@@ -1,6 +1,7 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import Head from 'next/head';
 import { EndpointProvider } from '../components/endpoint-state';
+import { ProtectedRoute } from '../components/protected-route';
 
 const theme = extendTheme({
   fonts: {
@@ -11,7 +12,7 @@ const theme = extendTheme({
 
 function MyApp({ Component, pageProps }) {
   return (
-    <>
+    <ProtectedRoute>
       <Head>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
@@ -24,7 +25,7 @@ function MyApp({ Component, pageProps }) {
           <Component {...pageProps} />
         </ChakraProvider>
       </EndpointProvider>
-    </>
+    </ProtectedRoute>
   );
 }
 

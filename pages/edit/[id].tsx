@@ -3,9 +3,8 @@ import { AppContainer, Content, Sidebar } from '../../components/app-container';
 import { useEndpoint } from '../../components/endpoint-state';
 import { useEffect } from 'react';
 import { supabase } from '../../supabase';
-import { ProtectedRoute } from '../../components/protected-route';
 
-export default function Edit({ user }) {
+export default function Edit() {
   const {
     query: { id },
   } = useRouter();
@@ -26,10 +25,8 @@ export default function Edit({ user }) {
   }, [id]);
 
   return (
-    <ProtectedRoute user={user}>
-      <AppContainer sidebar={<Sidebar />}>
-        <Content />
-      </AppContainer>
-    </ProtectedRoute>
+    <AppContainer sidebar={<Sidebar />}>
+      <Content />
+    </AppContainer>
   );
 }

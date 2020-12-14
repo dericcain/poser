@@ -1,33 +1,39 @@
-import { cloneElement, useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { Box } from '@chakra-ui/layout';
-import { Spinner } from '@chakra-ui/spinner';
 import { supabase } from '../supabase';
+import { User } from '@supabase/gotrue-js';
+import noop from 'lodash/noop';
 
-function Loader() {
-  return (
-    <Box h="100vh" display="flex" justifyContent="center" alignItems="center">
-      <Spinner color="gray.700" size="xl" />
-    </Box>
-  );
+export function ProtectedRoute({ children }) {
+  useAuth();
+  return children;
 }
 
-function Redirect({ path }) {
-  const { push } = useRouter();
+function useAuth() {
+  const user = useRef<User>(supabase.auth.user());
+  const { pathname, push } = useRouter();
+
   useEffect(() => {
-    (async () => {
-      await push(path);
-    })();
+    if (!user.current && pathname !== '/') {
+      push('/');
+    } else if (user.current && pathname === '/') {
+      push('/create');
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'USER_UPDATED') {
+        user.current = session.user;
+      } else if (event === 'SIGNED_OUT') {
+        user.current = undefined;
+      } else if (event === 'SIGNED_IN') {
+        push('/create');
+      }
+    });
+    return () => {
+      supabase.auth.onAuthStateChange(noop);
+    };
   }, []);
-  return null;
-}
-
-export function ProtectedRoute({ children, ...props }) {
-  const user = supabase.auth.user();
-  return user ? cloneElement(children, props) : <Redirect path="/" />;
-}
-
-export function NonProtectedRoute({ children, ...props }) {
-  const user = supabase.auth.user();
-  return !user ? cloneElement(children, props) : <Redirect path="create" />;
+  return user.current;
 }

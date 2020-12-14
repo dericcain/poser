@@ -1,61 +1,58 @@
 import Head from 'next/head';
 import { Box, Heading, Button, Text } from '@chakra-ui/react';
 import { supabase } from '../supabase';
-import { NonProtectedRoute } from '../components/protected-route';
 
 export default function Home() {
-  const login = () => {
-    supabase.auth.signIn({ provider: 'github' });
+  const login = async () => {
+    await supabase.auth.signIn({ provider: 'github' });
   };
 
   return (
-    <NonProtectedRoute>
-      <>
-        <Head>
-          <title>Poser</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+    <>
+      <Head>
+        <title>Poser</title>
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <Box
+        display="flex"
+        flexDirection="column"
+        h="100vh"
+        alignItems="center"
+        justifyContent="center"
+        pb={10}
+      >
         <Box
+          width="100%"
           display="flex"
-          flexDirection="column"
-          h="100vh"
           alignItems="center"
           justifyContent="center"
-          pb={10}
+          flexDirection="column"
         >
-          <Box
-            width="100%"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            flexDirection="column"
+          <Heading
+            mb={5}
+            as="h1"
+            fontWeight="normal"
+            fontFamily="mono"
+            size="4xl"
+            textStyle="fonts.mono"
           >
-            <Heading
-              mb={5}
-              as="h1"
-              fontWeight="normal"
-              fontFamily="mono"
-              size="4xl"
-              textStyle="fonts.mono"
-            >
-              Poser
-            </Heading>
-            <Text fontSize="lg">Build mock endpoints with ease.</Text>
-            <Button
-              mt={5}
-              backgroundColor="gray.800"
-              color="white"
-              _hover={{ bg: '#000' }}
-              onClick={login}
-            >
-              Create endpoint
-            </Button>
-            <Text fontSize="xs" mt={5}>
-              (You will be logged in via Github.)
-            </Text>
-          </Box>
+            Poser
+          </Heading>
+          <Text fontSize="lg">Build mock endpoints with ease.</Text>
+          <Button
+            mt={5}
+            backgroundColor="gray.800"
+            color="white"
+            _hover={{ bg: '#000' }}
+            onClick={login}
+          >
+            Create endpoint
+          </Button>
+          <Text fontSize="xs" mt={5}>
+            (You will be logged in via Github.)
+          </Text>
         </Box>
-      </>
-    </NonProtectedRoute>
+      </Box>
+    </>
   );
 }

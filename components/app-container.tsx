@@ -36,13 +36,14 @@ export function AppContainer({ children, sidebar }) {
   );
 }
 
-export function Content({ isEdit = false, id = undefined }) {
+export function Content({ isEdit = false, id = undefined, tips = undefined }) {
   const [name, setName] = useEndpointName();
   const { attributes, addAttribute, changeAttribute } = useEndpointAttributes();
   const createEndpoint = useCreateEndpoint();
   const updateEndpoint = useUpdateEndpoint(id);
   return (
     <Box display="flex" flexDirection="column" p={10} overflowY="auto">
+      {tips}
       <Box>
         <form onSubmit={isEdit ? updateEndpoint : createEndpoint}>
           <FormControl id="name" isRequired mb={5}>

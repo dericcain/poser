@@ -2,6 +2,18 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import Head from 'next/head';
 import { EndpointProvider } from '../components/endpoint-state';
 import { ProtectedRoute } from '../components/protected-route';
+import * as Sentry from '@sentry/react';
+import { Integrations } from '@sentry/tracing';
+
+Sentry.init({
+  dsn: 'https://1c5fe00102584560ac4e001acf25c96e@o491848.ingest.sentry.io/5558083',
+  autoSessionTracking: true,
+  integrations: [new Integrations.BrowserTracing()],
+
+  // We recommend adjusting this value in production, or using tracesSampler
+  // for finer control
+  tracesSampleRate: 1.0,
+});
 
 const theme = extendTheme({
   fonts: {

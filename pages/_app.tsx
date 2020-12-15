@@ -1,7 +1,7 @@
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import Head from 'next/head';
 import { EndpointProvider } from '../components/endpoint-state';
-import { useAuth } from '../components/use-auth';
+import { ProtectedRoute } from '../components/protected-route';
 
 const theme = extendTheme({
   fonts: {
@@ -11,9 +11,8 @@ const theme = extendTheme({
 });
 
 function MyApp({ Component, pageProps }) {
-  const user = useAuth();
   return (
-    <>
+    <ProtectedRoute>
       <Head>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
@@ -23,10 +22,10 @@ function MyApp({ Component, pageProps }) {
       </Head>
       <EndpointProvider>
         <ChakraProvider theme={theme}>
-          <Component {...pageProps} user={user} />
+          <Component {...pageProps} />
         </ChakraProvider>
       </EndpointProvider>
-    </>
+    </ProtectedRoute>
   );
 }
 

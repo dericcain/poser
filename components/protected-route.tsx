@@ -1,16 +1,39 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useRouter } from 'next/router';
+import { supabase } from '../supabase';
+import { User } from '@supabase/gotrue-js';
+import noop from 'lodash/noop';
 
-function Redirect({ path }) {
-  const { push } = useRouter();
-  useEffect(() => {
-    (async () => {
-      await push(path);
-    })();
-  }, []);
-  return null;
+export function ProtectedRoute({ children }) {
+  useAuth();
+  return children;
 }
 
-export function ProtectedRoute({ children: Children, user, ...props }) {
-  return user ? <Children {...props} /> : <Redirect path="/" />;
+function useAuth() {
+  const user = useRef<User>(supabase.auth.user());
+  const { pathname, push } = useRouter();
+
+  useEffect(() => {
+    if (!user.current && pathname !== '/') {
+      (async () => await push('/'))();
+    } else if (user.current && pathname === '/') {
+      (async () => await push('/create'))();
+    }
+  }, [pathname]);
+
+  useEffect(() => {
+    supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'USER_UPDATED') {
+        user.current = session.user;
+      } else if (event === 'SIGNED_OUT') {
+        user.current = undefined;
+      } else if (event === 'SIGNED_IN') {
+        (async () => await push('/create'))();
+      }
+    });
+    return () => {
+      supabase.auth.onAuthStateChange(noop);
+    };
+  }, []);
+  return user.current;
 }

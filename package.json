@@ -16,6 +16,7 @@
     "framer-motion": "^2.9.5",
     "immer": "^8.0.0",
     "lodash": "^4.17.20",
+    "nanoid": "^3.1.20",
     "next": "10.0.3",
     "react": "17.0.1",
     "react-dom": "17.0.1",

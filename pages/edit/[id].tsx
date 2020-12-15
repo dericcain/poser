@@ -26,7 +26,7 @@ export default function Edit() {
 
   return (
     <AppContainer sidebar={<Sidebar />}>
-      <Content />
+      <Content isEdit={true} />
     </AppContainer>
   );
 }

@@ -49,10 +49,8 @@ function Tips() {
 export default function Create() {
   useClearEndpoints();
   return (
-    <ProtectedRoute>
-      <AppContainer sidebar={<Sidebar />}>
-        <Content tips={<Tips />} />
-      </AppContainer>
-    </ProtectedRoute>
+    <AppContainer sidebar={<Sidebar />}>
+      <Content tips={<Tips />} />
+    </AppContainer>
   );
 }

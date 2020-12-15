@@ -1,10 +1,11 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { createContainer } from 'react-tracked';
 import { useSetState } from 'react-use';
 import produce from 'immer';
 import { supabase } from '../supabase';
 import { createJson, id, makeKebab } from '../utils';
 import { useRouter } from 'next/router';
+import { useAlert } from './alert';
 
 interface Attribute {
   name: string;
@@ -34,12 +35,28 @@ export const useClearEndpoints = () => {
   }, []);
 };
 
-export const useUpdateEndpoint = (id: string) => {
+export const useUpdateEndpoint = (id: string): [(e: any) => Promise<void>, boolean] => {
   const [state] = useEndpoint();
-  return async (e) => {
-    e.preventDefault();
-    await supabase.from('endpoints').update(state).eq('id', id);
+  const [loading, setLoading] = useState(false);
+  const [, setAlert] = useAlert();
+  const updateEndpoint = async (e) => {
+    try {
+      e.preventDefault();
+      setLoading(true);
+      await supabase.from('endpoints').update(state).eq('id', id);
+      setAlert({ message: 'Your endpoint was updated.', active: true });
+    } catch (error) {
+      setAlert({
+        message: 'There was a problem updating your endpoint.',
+        status: 'error',
+        active: true,
+      });
+      throw new Error(error);
+    } finally {
+      setLoading(false);
+    }
   };
+  return [updateEndpoint, loading];
 };
 
 export const useEndpointName = () => {
@@ -78,22 +95,32 @@ export const useEndpointAttributes = () => {
   };
 };
 
-export const useCreateEndpoint = () => {
+export const useCreateEndpoint = (): [(e: any) => Promise<void>, boolean] => {
   const [state] = useEndpoint();
   const { push } = useRouter();
+  const [loading, setLoading] = useState(false);
   const user = supabase.auth.user();
-  return async (e) => {
-    e.preventDefault();
-    const { data } = await supabase.from('endpoints').insert([
-      {
-        ...state,
-        path: makeKebab(state.name),
-        key: id(),
-        user_id: user.id,
-      },
-    ]);
-    await push(`edit/${data[0].id}`);
+  const createEndpoint = async (e) => {
+    try {
+      e.preventDefault();
+      setLoading(true);
+      const { data } = await supabase.from('endpoints').insert([
+        {
+          ...state,
+          path: makeKebab(state.name),
+          key: id(),
+          user_id: user.id,
+        },
+      ]);
+      setLoading(false);
+      await push(`/edit/${data[0].id}`);
+    } catch (error) {
+      setLoading(false);
+      throw new Error(error);
+    }
   };
+
+  return [createEndpoint, loading];
 };
 
 export const useAttributesTree = () => {

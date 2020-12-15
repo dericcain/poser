@@ -19,6 +19,7 @@ import {
   useUpdateEndpoint,
 } from './endpoint-state';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 export function AppContainer({ children, sidebar }) {
   return (
@@ -36,11 +37,16 @@ export function AppContainer({ children, sidebar }) {
   );
 }
 
-export function Content({ isEdit = false, id = undefined, tips = undefined }) {
+export function Content({ isEdit = false, tips = undefined }) {
+  const {
+    query: { id },
+  } = useRouter();
   const [name, setName] = useEndpointName();
   const { attributes, addAttribute, changeAttribute } = useEndpointAttributes();
-  const createEndpoint = useCreateEndpoint();
-  const updateEndpoint = useUpdateEndpoint(id);
+  const [createEndpoint, loadingCreate] = useCreateEndpoint();
+  const [updateEndpoint, loadingUpdate] = useUpdateEndpoint(id as string);
+  const loading = loadingUpdate || loadingCreate;
+
   return (
     <Box display="flex" flexDirection="column" p={10} overflowY="auto">
       {tips}
@@ -85,8 +91,9 @@ export function Content({ isEdit = false, id = undefined, tips = undefined }) {
               _hover={{ bg: '#000' }}
               type="submit"
               isFullWidth
+              isLoading={loading}
             >
-              Create endpoint
+              {isEdit ? 'Update' : 'Create'} endpoint
             </Button>
           </Box>
         </form>

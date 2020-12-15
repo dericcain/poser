@@ -15,9 +15,9 @@ function useAuth() {
 
   useEffect(() => {
     if (!user.current && pathname !== '/') {
-      push('/');
+      (async () => await push('/'))();
     } else if (user.current && pathname === '/') {
-      push('/create');
+      (async () => await push('/create'))();
     }
   }, [pathname]);
 
@@ -28,7 +28,7 @@ function useAuth() {
       } else if (event === 'SIGNED_OUT') {
         user.current = undefined;
       } else if (event === 'SIGNED_IN') {
-        push('/create');
+        (async () => await push('/create'))();
       }
     });
     return () => {

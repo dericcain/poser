@@ -46,7 +46,7 @@ export default function Home() {
             _hover={{ bg: '#000' }}
             onClick={login}
           >
-            Create endpoint
+            Get started!
           </Button>
           <Text fontSize="xs" mt={5}>
             (You will be logged in via Github.)

@@ -112,12 +112,14 @@ export function Header() {
     <Box px={5} borderBottom="1px solid #444" h="60px" display="flex" alignItems="center">
       <Heading fontFamily="'Cutive Mono', monospace">Poser</Heading>
       <Link href="/list">
-        <Button variant="outline" marginLeft="auto">
+        <Button size="sm" variant="outline" marginLeft="auto">
           My endpoints
         </Button>
       </Link>
       <Link href="/create">
-        <Button marginLeft={2}>Create endpoint</Button>
+        <Button size="sm" marginLeft={2}>
+          Create endpoint
+        </Button>
       </Link>
     </Box>
   );

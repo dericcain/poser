@@ -1,7 +1,17 @@
 import { supabase } from '../../supabase';
-import { createJson, init } from '../../utils';
+import { init } from '../../utils';
+import set from 'lodash/set';
+import faker from 'faker';
 
 init();
+
+export const createJson = (attrs) =>
+  attrs.reduce((f, c) => {
+    const [namespace, method] = c.type.split('.');
+    const data = faker?.[namespace]?.[method]();
+    set(f, c.name, data);
+    return f;
+  }, {});
 
 const MAX_ARRAY_SIZE = 500;
 
@@ -23,8 +33,8 @@ export default async (req, res) => {
     return res.status(404).json({ message: 'Not found' });
   }
   const { attributes } = data[0];
-  size = size <= MAX_ARRAY_SIZE ? size : MAX_ARRAY_SIZE;
   if (size) {
+    size = size <= MAX_ARRAY_SIZE ? size : MAX_ARRAY_SIZE;
     return res.status(200).json(buildResponse(+size, attributes));
   }
   return res.status(200).json(createJson(attributes));

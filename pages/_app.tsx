@@ -2,14 +2,14 @@ import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 import Head from 'next/head';
 import { EndpointProvider } from '../components/endpoint-state';
 import { ProtectedRoute } from '../components/protected-route';
-import * as Sentry from '@sentry/react';
+import * as Sentry from '@sentry/node';
 import { Integrations } from '@sentry/tracing';
 import { Alert, AlertProvider } from '../components/alert';
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NEXT_PUBLIC_SENTRY_DSN) {
   Sentry.init({
     dsn: 'https://1c5fe00102584560ac4e001acf25c96e@o491848.ingest.sentry.io/5558083',
-    autoSessionTracking: true,
+    enabled: process.env.NODE_ENV === 'production',
     integrations: [new Integrations.BrowserTracing()],
 
     // We recommend adjusting this value in production, or using tracesSampler
@@ -25,7 +25,7 @@ const theme = extendTheme({
   },
 });
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, err }) {
   return (
     <ProtectedRoute>
       <Head>
@@ -38,7 +38,7 @@ function MyApp({ Component, pageProps }) {
       <AlertProvider>
         <EndpointProvider>
           <ChakraProvider theme={theme}>
-            <Component {...pageProps} />
+            <Component {...pageProps} err={err} />
             <Alert />
           </ChakraProvider>
         </EndpointProvider>

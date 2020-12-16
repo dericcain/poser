@@ -1,5 +1,7 @@
 import { supabase } from '../../supabase';
-import { createJson } from '../../utils';
+import { createJson, init } from '../../utils';
+
+init();
 
 const MAX_ARRAY_SIZE = 500;
 

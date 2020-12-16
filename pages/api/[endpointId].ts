@@ -23,8 +23,8 @@ export default async (req, res) => {
     return res.status(404).json({ message: 'Not found' });
   }
   const { attributes } = data[0];
-  size = size <= MAX_ARRAY_SIZE ? size : MAX_ARRAY_SIZE;
   if (size) {
+    size = size <= MAX_ARRAY_SIZE ? size : MAX_ARRAY_SIZE;
     return res.status(200).json(buildResponse(+size, attributes));
   }
   return res.status(200).json(createJson(attributes));

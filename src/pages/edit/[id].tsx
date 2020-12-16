@@ -8,7 +8,7 @@ export default function Edit() {
   const {
     query: { id },
   } = useRouter();
-  const [state, setState] = useEndpoint();
+  const [, setState] = useEndpoint();
 
   useEffect(() => {
     if (id) {

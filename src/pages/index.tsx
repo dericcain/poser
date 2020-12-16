@@ -1,6 +1,7 @@
 import Head from 'next/head';
-import { Box, Heading, Button, Text } from '@chakra-ui/react';
+import { Box, Button, Text } from '@chakra-ui/react';
 import { supabase } from '../supabase';
+import { Logo } from '../images/logo';
 
 export default function Home() {
   const login = async () => {
@@ -28,19 +29,12 @@ export default function Home() {
           justifyContent="center"
           flexDirection="column"
         >
-          <Heading
-            mb={5}
-            as="h1"
-            fontWeight="normal"
-            fontFamily="mono"
-            size="4xl"
-            textStyle="fonts.mono"
-          >
-            Poser
-          </Heading>
+          <Box mb={5}>
+            <Logo />
+          </Box>
           <Text fontSize="lg">Build mock endpoints with ease.</Text>
           <Button
-            mt={5}
+            mt={10}
             backgroundColor="gray.800"
             color="white"
             _hover={{ bg: '#000' }}

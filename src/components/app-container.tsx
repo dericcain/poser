@@ -4,7 +4,6 @@ import {
   FormControl,
   FormLabel,
   Grid,
-  Heading,
   HStack,
   Input,
   Select,
@@ -20,6 +19,7 @@ import {
 } from './endpoint-state';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { LogoSmall } from '../images/logo-small';
 
 export function AppContainer({ children, sidebar }) {
   return (
@@ -117,7 +117,7 @@ export function Sidebar() {
 export function Header() {
   return (
     <Box px={5} borderBottom="1px solid #444" h="60px" display="flex" alignItems="center">
-      <Heading fontFamily="'Cutive Mono', monospace">Poser</Heading>
+      <LogoSmall />
       <Link href="/list">
         <Button size="sm" variant="outline" marginLeft="auto">
           My endpoints

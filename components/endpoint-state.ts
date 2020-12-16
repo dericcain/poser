@@ -3,7 +3,7 @@ import { createContainer } from 'react-tracked';
 import { useSetState } from 'react-use';
 import produce from 'immer';
 import { supabase } from '../supabase';
-import { createJson, id, makeKebab } from '../utils';
+import { createJsonWithoutFakeData, id, makeKebab } from '../utils';
 import { useRouter } from 'next/router';
 import { useAlert } from './alert';
 
@@ -125,7 +125,7 @@ export const useCreateEndpoint = (): [(e: any) => Promise<void>, boolean] => {
 
 export const useAttributesTree = () => {
   const { attributes } = useEndpointAttributes();
-  return JSON.stringify(createJson(attributes, false), null, 2);
+  return JSON.stringify(createJsonWithoutFakeData(attributes), null, 2);
 };
 
 export const fakerOptions = [

@@ -1,7 +1,17 @@
 import { supabase } from '../../supabase';
-import { createJson, init } from '../../utils';
+import { init } from '../../utils';
+import set from 'lodash/set';
+import faker from 'faker';
 
 init();
+
+export const createJson = (attrs) =>
+  attrs.reduce((f, c) => {
+    const [namespace, method] = c.type.split('.');
+    const data = faker?.[namespace]?.[method]();
+    set(f, c.name, data);
+    return f;
+  }, {});
 
 const MAX_ARRAY_SIZE = 500;
 

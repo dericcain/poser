@@ -8,7 +8,9 @@ import { hotjar } from 'react-hotjar';
 
 init();
 
-hotjar.initialize(2165102, 6);
+if (typeof window !== 'undefined') {
+  hotjar.initialize(2165102, 6);
+}
 
 const theme = extendTheme({
   fonts: {

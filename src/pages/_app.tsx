@@ -4,8 +4,13 @@ import { EndpointProvider } from '../components/endpoint-state';
 import { ProtectedRoute } from '../components/protected-route';
 import { Alert, AlertProvider } from '../components/alert';
 import { init } from '../utils';
+import { hotjar } from 'react-hotjar';
 
 init();
+
+if (typeof window !== 'undefined') {
+  hotjar.initialize(2165102, 6);
+}
 
 const theme = extendTheme({
   fonts: {

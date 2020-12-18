@@ -10,6 +10,8 @@ import {
   Text,
   Heading,
   Divider,
+  Code,
+  Link as StyledLink,
 } from '@chakra-ui/react';
 import {
   fakerOptions,
@@ -28,7 +30,7 @@ export function AppContainer({ children, sidebar }) {
     <Box h="100vh">
       <Header />
       {sidebar ? (
-        <Grid templateColumns="auto 420px" h="calc(100vh - 60px)">
+        <Grid templateColumns="auto 420px" h="calc(100vh - 72px)">
           {children}
           {sidebar}
         </Grid>
@@ -54,6 +56,19 @@ export function Content({ isEdit = false, tips = undefined }) {
       <Heading size="lg" color="#777" fontWeight="300" mb={5}>
         {isEdit ? 'Edit endpoint' : 'Create endpoint'}
       </Heading>
+      {isEdit && (
+        <Text mb={5}>
+          This endpoint's URL is{' '}
+          <StyledLink href={`https://poser.app/api/${id}`} target="_blank">
+            https://poser.app/api/{id}
+          </StyledLink>
+          . (Don't forget, you can use the <Code>size</Code> query param, e.g.,{' '}
+          <StyledLink href={`https://poser.app/api/${id}?size=50`} target="_blank">
+            https://poser.app/api/{id}?size=50
+          </StyledLink>
+          )
+        </Text>
+      )}
       {tips}
       <Box>
         <form onSubmit={isEdit ? updateEndpoint : createEndpoint}>
@@ -117,7 +132,7 @@ export function Content({ isEdit = false, tips = undefined }) {
 export function Sidebar() {
   const jsonTree = useAttributesTree();
   return (
-    <Box borderLeft="1px solid #444" p={10}>
+    <Box borderLeft="1px solid #CCC" p={10}>
       <Text mb={5}>This is the shape of your object.</Text>
       <Box as="pre" fontSize="xs" backgroundColor="gray.100" p={3} overflowX="auto">
         {jsonTree}
@@ -128,7 +143,7 @@ export function Sidebar() {
 
 export function Header() {
   return (
-    <Box px={5} borderBottom="1px solid #444" h="60px" display="flex" alignItems="center">
+    <Box px={5} borderBottom="1px solid #CCC" h="72px" display="flex" alignItems="center">
       <LogoSmall />
       <Link href="/list">
         <Button size="sm" variant="outline" marginLeft="auto">

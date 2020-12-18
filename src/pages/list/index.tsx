@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { supabase } from '../../supabase';
 import { AppContainer } from '../../components/app-container';
 import {
@@ -16,6 +16,12 @@ import {
   Divider,
   Text,
   Link as StyledLink,
+  AlertDialogOverlay,
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from '@chakra-ui/react';
 import { InfoOutlineIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
@@ -52,59 +58,109 @@ function Tips() {
 export default function List() {
   const [endpoints, setEndpoints] = useState<any>();
   const [loading, setLoading] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const cancelRef = useRef();
+  const endpointToDelete = useRef<string>();
+
+  const fetchEndpoints = async () => {
+    const { data } = await supabase.from('endpoints').select('id, name, key, path, attributes');
+    setEndpoints(data);
+    setLoading(false);
+  };
 
   useEffect(() => {
     (async () => {
-      const { data } = await supabase.from('endpoints').select('id, name, key, path, attributes');
-      setEndpoints(data);
-      setLoading(false);
+      await fetchEndpoints();
     })();
   }, []);
 
+  const confirmDeleteEndpoint = (id: string) => () => {
+    endpointToDelete.current = id;
+    setIsOpen(true);
+  };
+
+  const deleteEndpoint = async () => {
+    await supabase.from('endpoints').delete().eq('id', endpointToDelete.current);
+    endpointToDelete.current = undefined;
+    onClose();
+    await fetchEndpoints();
+  };
+
+  const onClose = () => setIsOpen(false);
+
   return (
-    <AppContainer sidebar={undefined}>
-      <Box p={10}>
-        {loading ? (
-          <Center>
-            <Spinner size="xl" />
-          </Center>
-        ) : (
-          <>
-            <Tips />
-            <Table variant="simple">
-              <Thead>
-                <Tr>
-                  <Th>Name</Th>
-                  <Th>URL</Th>
-                  <Th />
-                </Tr>
-              </Thead>
-              <Tbody>
-                {endpoints &&
-                  endpoints.map((e) => (
-                    <Tr key={e.id}>
-                      <Td>{e.name}</Td>
-                      <Td>
-                        <StyledLink
-                          isExternal
-                          href={`https://poser.app/api/${e.id}`}
-                          target="_blank"
-                        >{`https://poser.app/api/${e.id}`}</StyledLink>
-                      </Td>
-                      <Td>
-                        <Link href={`edit/${e.id}`}>
-                          <Button size="xs" variant="outline">
-                            Edit
+    <>
+      <AppContainer sidebar={undefined}>
+        <Box p={10}>
+          {loading ? (
+            <Center>
+              <Spinner size="xl" />
+            </Center>
+          ) : (
+            <>
+              <Tips />
+              <Table variant="simple">
+                <Thead>
+                  <Tr>
+                    <Th>Name</Th>
+                    <Th>URL</Th>
+                    <Th />
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {endpoints &&
+                    endpoints.map((e) => (
+                      <Tr key={e.id}>
+                        <Td>{e.name}</Td>
+                        <Td>
+                          <StyledLink
+                            isExternal
+                            href={`https://poser.app/api/${e.id}`}
+                            target="_blank"
+                          >{`https://poser.app/api/${e.id}`}</StyledLink>
+                        </Td>
+                        <Td textAlign="right">
+                          <Link href={`edit/${e.id}`}>
+                            <Button size="xs" variant="outline">
+                              Edit
+                            </Button>
+                          </Link>
+                          <Button
+                            size="xs"
+                            variant="outline"
+                            color="red.500"
+                            ml={2}
+                            onClick={confirmDeleteEndpoint(e.id)}
+                          >
+                            Delete
                           </Button>
-                        </Link>
-                      </Td>
-                    </Tr>
-                  ))}
-              </Tbody>
-            </Table>
-          </>
-        )}
-      </Box>
-    </AppContainer>
+                        </Td>
+                      </Tr>
+                    ))}
+                </Tbody>
+              </Table>
+            </>
+          )}
+        </Box>
+      </AppContainer>
+      <AlertDialog isOpen={isOpen} leastDestructiveRef={cancelRef} onClose={onClose}>
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Delete Endpoint
+            </AlertDialogHeader>
+            <AlertDialogBody>Are you sure? You can't undo this action afterwards.</AlertDialogBody>
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Cancel
+              </Button>
+              <Button colorScheme="red" onClick={deleteEndpoint} ml={3}>
+                Delete
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+    </>
   );
 }

@@ -112,7 +112,7 @@ export default function List() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {endpoints &&
+                  {endpoints.length > 0 ? (
                     endpoints.map((e) => (
                       <Tr key={e.id}>
                         <Td>{e.name}</Td>
@@ -140,7 +140,12 @@ export default function List() {
                           </Button>
                         </Td>
                       </Tr>
-                    ))}
+                    ))
+                  ) : (
+                    <Tr>
+                      <Td colspan="3">No endpoints yet</Td>
+                    </Tr>
+                  )}
                 </Tbody>
               </Table>
             </>

@@ -14,6 +14,12 @@ function useAuth() {
   const { pathname, push } = useRouter();
 
   useEffect(() => {
+    if (!supabase.auth.user() && pathname !== '/') {
+      push('/');
+    }
+  }, []);
+
+  useEffect(() => {
     supabase.auth.onAuthStateChange((event, session) => {
       if (event === 'USER_UPDATED') {
         setUser(session.user);

@@ -8,6 +8,8 @@ import {
   Input,
   Select,
   Text,
+  Heading,
+  Divider,
 } from '@chakra-ui/react';
 import {
   fakerOptions,
@@ -26,7 +28,7 @@ export function AppContainer({ children, sidebar }) {
     <Box h="100vh">
       <Header />
       {sidebar ? (
-        <Grid templateColumns="auto 400px" h="calc(100vh - 60px)">
+        <Grid templateColumns="auto 420px" h="calc(100vh - 60px)">
           {children}
           {sidebar}
         </Grid>
@@ -49,6 +51,9 @@ export function Content({ isEdit = false, tips = undefined }) {
 
   return (
     <Box display="flex" flexDirection="column" p={10} overflowY="auto">
+      <Heading size="lg" color="#777" fontWeight="300" mb={5}>
+        {isEdit ? 'Edit endpoint' : 'Create endpoint'}
+      </Heading>
       {tips}
       <Box>
         <form onSubmit={isEdit ? updateEndpoint : createEndpoint}>
@@ -56,10 +61,17 @@ export function Content({ isEdit = false, tips = undefined }) {
             <FormLabel>Endpoint name</FormLabel>
             <Input value={name as any} onChange={setName as any} size="sm" />
           </FormControl>
+          <Divider my={10} />
+          {!isEdit && (
+            <Text size="sm" mb={5}>
+              This is where you create the shape of the JSON objects that will be returned from your
+              endpoint. Be sure to check out the tips above.
+            </Text>
+          )}
           {attributes.map((a, i) => (
             <HStack key={i} mb={5}>
               <FormControl id={`${a.name}-name-${i}`}>
-                <FormLabel>Name</FormLabel>
+                <FormLabel>Attribute Name</FormLabel>
                 <Input value={a.name} onChange={changeAttribute('name', i)} size="sm" />
               </FormControl>
               <FormControl id={`${a.name}-type-${i}`}>
@@ -107,7 +119,7 @@ export function Sidebar() {
   return (
     <Box borderLeft="1px solid #444" p={10}>
       <Text mb={5}>This is the shape of your object.</Text>
-      <Box as="pre" fontSize="xs" backgroundColor="gray.100" p={3}>
+      <Box as="pre" fontSize="xs" backgroundColor="gray.100" p={3} overflowX="auto">
         {jsonTree}
       </Box>
     </Box>

@@ -17,6 +17,7 @@ import {
   Text,
   Link as StyledLink,
 } from '@chakra-ui/react';
+import { InfoOutlineIcon } from '@chakra-ui/icons';
 import Link from 'next/link';
 
 function Tips() {
@@ -39,6 +40,7 @@ function Tips() {
       )}
       <Center>
         <Button variant="link" onClick={toggleTips} size="sm" my={5}>
+          <InfoOutlineIcon mr={2} />
           {show ? 'Hide' : 'Show'} tips
         </Button>
       </Center>

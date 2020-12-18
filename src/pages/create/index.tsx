@@ -1,9 +1,9 @@
 import { AppContainer, Content, Sidebar } from '../../components/app-container';
-import { Box, Code, Text, Divider } from '@chakra-ui/layout';
+import { Box, Code, Text, Divider, Link } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Button } from '@chakra-ui/button';
 import { useClearEndpoints } from '../../components/endpoint-state';
-import { ProtectedRoute } from '../../components/protected-route';
+import { InfoOutlineIcon } from '@chakra-ui/icons';
 
 function Tips() {
   const [show, setShow] = useState(false);
@@ -16,9 +16,9 @@ function Tips() {
         <Box>
           <Text mb={5}>
             Poser uses the{' '}
-            <a href="http://marak.github.io/faker.js/" target="_blank">
+            <Link href="http://marak.github.io/faker.js/" target="_blank">
               Faker.js
-            </a>{' '}
+            </Link>{' '}
             library to generate fake data for your endpoint. The "Type" dropdown has most of the
             Faker methods. More will be implemented along with a way to pass arguments to those
             methods.
@@ -39,7 +39,7 @@ function Tips() {
         </Box>
       )}
       <Button variant="link" onClick={toggleTips} size="sm" my={5}>
-        {show ? 'Hide' : 'Show'} tips
+        <InfoOutlineIcon mr={2} /> {show ? 'Hide' : 'Show'} tips
       </Button>
       {show && <Divider mb={5} />}
     </>

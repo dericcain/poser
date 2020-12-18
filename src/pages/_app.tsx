@@ -11,6 +11,7 @@ const theme = extendTheme({
   fonts: {
     body: "'Cutive Mono', monospace",
     mono: "'Cutive Mono', monospace",
+    heading: "'Cutive', serif",
   },
 });
 
@@ -21,6 +22,11 @@ function MyApp({ Component, pageProps, err }) {
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
           href="https://fonts.googleapis.com/css2?family=Cutive+Mono&display=swap"
+          rel="stylesheet"
+        />
+        <link rel="preconnect" href="https://fonts.gstatic.com" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Cutive&display=swap"
           rel="stylesheet"
         />
       </Head>

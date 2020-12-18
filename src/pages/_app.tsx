@@ -17,7 +17,7 @@ const theme = extendTheme({
 
 function MyApp({ Component, pageProps, err }) {
   return (
-    <ProtectedRoute>
+    <>
       <Head>
         <link rel="preconnect" href="https://fonts.gstatic.com" />
         <link
@@ -33,12 +33,14 @@ function MyApp({ Component, pageProps, err }) {
       <AlertProvider>
         <EndpointProvider>
           <ChakraProvider theme={theme}>
-            <Component {...pageProps} err={err} />
+            <ProtectedRoute>
+              <Component {...pageProps} err={err} />
+            </ProtectedRoute>
             <Alert />
           </ChakraProvider>
         </EndpointProvider>
       </AlertProvider>
-    </ProtectedRoute>
+    </>
   );
 }
 

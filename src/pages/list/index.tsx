@@ -63,7 +63,11 @@ export default function List() {
   const endpointToDelete = useRef<string>();
 
   const fetchEndpoints = async () => {
-    const { data } = await supabase.from('endpoints').select('id, name, key, path, attributes');
+    const user = supabase.auth.user();
+    const { data } = await supabase
+      .from('endpoints')
+      .select('id, name, key, path, attributes')
+      .eq('user_id', user.id);
     setEndpoints(data);
     setLoading(false);
   };

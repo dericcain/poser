@@ -112,7 +112,7 @@ export default function List() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {endpoints.length > 0 ? (
+                  {endpoints?.length > 0 ? (
                     endpoints.map((e) => (
                       <Tr key={e.id}>
                         <Td>{e.name}</Td>

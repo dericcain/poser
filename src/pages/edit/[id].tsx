@@ -17,7 +17,7 @@ export default function Edit() {
           .from('endpoints')
           .select('name, path, attributes')
           .eq('id', id);
-        if (data.length > 0) {
+        if (data?.length > 0) {
           setState(data[0]);
         }
       })();

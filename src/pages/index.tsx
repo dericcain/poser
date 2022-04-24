@@ -5,6 +5,7 @@ import { Logo } from '../images/logo';
 
 export default function Home() {
   const login = async () => {
+    throw Error('This is jacked up....');
     await supabase.auth.signIn({ provider: 'github' });
   };
 

@@ -59,12 +59,12 @@ export function Content({ isEdit = false, tips = undefined }) {
       {isEdit && (
         <Text mb={5}>
           This endpoint's URL is{' '}
-          <StyledLink href={`https://poser.app/api/${id}`} target="_blank">
-            https://poser.app/api/{id}
+          <StyledLink href={`https://poser-eta.vercel.app/api/${id}`} target="_blank">
+            https://poser-eta.vercel.app/api/{id}
           </StyledLink>
           . (Don't forget, you can use the <Code>size</Code> query param, e.g.,{' '}
-          <StyledLink href={`https://poser.app/api/${id}?size=50`} target="_blank">
-            https://poser.app/api/{id}?size=50
+          <StyledLink href={`https://poser-eta.vercel.app/api/${id}?size=50`} target="_blank">
+            https://poser-eta.vercel.app/api/{id}?size=50
           </StyledLink>
           )
         </Text>

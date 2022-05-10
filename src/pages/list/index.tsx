@@ -38,7 +38,7 @@ function Tips() {
           <Text mb={5} textAlign="center">
             You can pass the <Code>size</Code> query parameter to your GET call to tell the API how
             many items you want returned. For example,{' '}
-            <Code>https://poser.app/api/123?size=100</Code>
+            <Code>https://poser-eta.vercel.app/api/123?size=100</Code>
             would return 100 items in the array. Currently, 500 is the maximum size that can be
             returned.
           </Text>
@@ -119,9 +119,9 @@ export default function List() {
                         <Td>
                           <StyledLink
                             isExternal
-                            href={`https://poser.app/api/${e.id}`}
+                            href={`https://poser-eta.vercel.app/api/${e.id}`}
                             target="_blank"
-                          >{`https://poser.app/api/${e.id}`}</StyledLink>
+                          >{`https://poser-eta.vercel.app/api/${e.id}`}</StyledLink>
                         </Td>
                         <Td textAlign="right">
                           <Link href={`edit/${e.id}`}>
